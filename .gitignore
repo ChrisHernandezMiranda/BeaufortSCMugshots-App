@@ -1,0 +1,13 @@
+# Node.js dependencies
+node_modules/
+
+# Log files
+logs
+*.log
+
+# Ignore dotenv file where sensitive environment variables are stored
+.env
+
+# Optional: You can ignore the package-lock or yarn.lock files if you don't want them in version control
+package-lock.json
+yarn.lock
