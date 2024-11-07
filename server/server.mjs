@@ -1,33 +1,30 @@
 import dotenv from 'dotenv';
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import cron from 'node-cron';
+import { fileURLToPath } from 'url';
 
-// Import Routes
 import xmlRoutes from './routes/xmlRoutes.mjs';
 import arrestRecordsRoutes from './routes/arrestRecordsRoutes.mjs';
-
-// Import the function to fetch and store XML data
 import { fetchAndStoreXML } from './controllers/xmlController.mjs';
 
-// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware to parse JSON requests
 app.use(express.json());
-
-// Enable CORS to allow cross-origin requests from the frontend
 app.use(cors());
 
-// Serve static files from the React app in production
-// Use import.meta.url to get the current directory in ES modules
-app.use(express.static(path.join(path.dirname(import.meta.url), '../mugshots-app-client/build')));
+// Derive the absolute path for the `dist` folder
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const clientDistPath = path.join(__dirname, '../mugshots-app-client/dist');
 
-// Cron job to fetch XML data every 8 hours (adjust the schedule as necessary)
+// Serve static files from the frontend's `dist` folder
+app.use(express.static(clientDistPath));
+
 cron.schedule('0 */2 * * *', () => {
   console.log('Fetching and storing XML data...');
   fetchAndStoreXML()
@@ -36,16 +33,14 @@ cron.schedule('0 */2 * * *', () => {
     });
 });
 
-
 app.use('/xml', xmlRoutes);
 app.use('/inmates', arrestRecordsRoutes);
 
-
+// Catch-all route to serve the frontend app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(path.dirname(import.meta.url), '../mugshots-app-client/build', 'index.html'));
+  res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
