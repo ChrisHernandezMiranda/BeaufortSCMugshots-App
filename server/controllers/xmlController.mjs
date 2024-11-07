@@ -1,6 +1,7 @@
-import fetch from 'node-fetch'; // Ensure you have node-fetch installed
-import { Parser } from 'xml2js'; // Ensure you have xml2js installed
-import db from '../models/db.mjs'; // Adjust the import according to your database setup
+
+import fetch from 'node-fetch'; 
+import { Parser } from 'xml2js'; 
+import db from '../models/db.mjs'; 
 
 // Helper function to format date from a string
 const formatDate = (dateString) => {
@@ -44,31 +45,18 @@ export const fetchAndStoreXML = async () => {
 
         for (const inmate of inmates) {
             const { nl, nf, nm, street, csz, racegen, sex, dob, ht, wt, bn, image1, ar, age } = inmate;
-
+        
             const mugshotUrl = image1 && image1[0] && image1[0].$ && image1[0].$.src ? image1[0].$.src : null;
-
-            // Update the booked_date and booked_time fields according to your XML structure
+        
             const bookedDate = formatDate(inmate.dtin ? inmate.dtin[0] : null);
             const bookedTime = formatTime(inmate.tmin ? inmate.tmin[0] : null);
             const releaseDate = inmate.dtout && inmate.dtout[0] === "Confined" ? null : formatDate(inmate.dtout ? inmate.dtout[0] : null);
             const releaseTime = inmate.dtout && inmate.dtout[0] === "Confined" ? null : formatTime(inmate.tmout ? inmate.tmout[0] : null);
-
+        
             const dateOfBirth = formatDate(dob ? dob[0] : null);
-            
-            // Correctly access age directly
-            const ageValue = age && age[0] ? parseInt(age[0]) : null; // Accessing the age directly
-
-            // Debugging logs for inmate data and age extraction
-            console.log(`Inmate Data: ${JSON.stringify(inmate)}`);
-            console.log(`Extracted Age: ${ageValue}, Date of Birth: ${dateOfBirth}`);
-
-            // Log if date formatting fails
-            if (!dateOfBirth || !bookedDate) {
-                console.error('Invalid date format found:', { dateOfBirth, bookedDate });
-                continue;
-            }
-
-            // Inserting inmate details
+            const ageValue = age && age[0] ? parseInt(age[0]) : null;
+        
+            // Insert each booking as a separate record
             const inmateQuery = `
                 INSERT INTO inmate (
                     last_name, first_name, middle_name, street, 
@@ -82,7 +70,7 @@ export const fetchAndStoreXML = async () => {
                         $16, $17)
                 RETURNING id;
             `;
-
+        
             const inmateValues = [
                 nl[0], nf[0], nm[0], street[0], csz[0], 
                 racegen[0], sex[0], dateOfBirth, 
@@ -90,18 +78,15 @@ export const fetchAndStoreXML = async () => {
                 bookedDate, bookedTime, releaseDate, 
                 releaseTime, mugshotUrl
             ];
-
-            // Log values before inserting into the database
-            console.log(`Inmate Values: ${JSON.stringify(inmateValues)}`);
-
+        
             const inmateRes = await db.query(inmateQuery, inmateValues);
             const inmateId = inmateRes.rows[0].id;
             console.log('Inserted inmate with ID:', inmateId);
-
-            // Handle arrest details if available
+        
+            // Insert arrest details if available
             if (ar && ar[0]) {
                 const { aa, ao, bn: arrestBn } = ar[0];
-
+        
                 const arrestQuery = `
                     INSERT INTO arrest (
                         inmate_id, agency, officer, 
@@ -110,19 +95,17 @@ export const fetchAndStoreXML = async () => {
                     VALUES ($1, $2, $3, $4)
                     RETURNING id;
                 `;
-                const arrestValues = [
-                    inmateId, aa[0], ao[0], arrestBn[0]
-                ];
-
+        
+                const arrestValues = [inmateId, aa[0], ao[0], arrestBn[0]];
                 const arrestRes = await db.query(arrestQuery, arrestValues);
                 const arrestId = arrestRes.rows[0].id;
                 console.log('Inserted arrest with ID:', arrestId);
-
-                // Handle offenses related to the arrest
+        
+                // Insert offenses related to the arrest
                 if (ar[0].of && Array.isArray(ar[0].of)) {
                     for (const offense of ar[0].of) {
-                        const { os, ow, ol, ob, oc } = offense; // Assuming 'ow' is offense description
-
+                        const { os, ow, ol, ob, oc } = offense;
+        
                         const offenseQuery = `
                             INSERT INTO offense (
                                 arrest_id, offense_code, 
@@ -131,17 +114,19 @@ export const fetchAndStoreXML = async () => {
                             )
                             VALUES ($1, $2, $3, $4, $5, $6);
                         `;
+        
                         const offenseValues = [
                             arrestId, os[0], ow[0], 
                             ol[0], ob[0] ? parseFloat(ob[0]) : null, oc[0]
                         ];
-
+        
                         await db.query(offenseQuery, offenseValues);
                         console.log('Inserted offense for arrest ID:', arrestId);
                     }
                 }
             }
         }
+        
     } catch (error) {
         console.error('Error fetching and storing XML data:', error);
         throw error;

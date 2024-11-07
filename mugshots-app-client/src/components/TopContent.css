@@ -1,0 +1,187 @@
+/* Container styling for the top content */
+.top-content-container {
+    display: flex; /* Flexbox layout to align child elements horizontally */
+    align-items: center; /* Vertically center the child elements */
+    justify-content: space-between; /* Space out the child elements (logo, search, and filter) across the container */
+    gap: 10px; /* Adds 10px gap between the elements in the container */
+    padding: 10px 20px; /* Adds padding around the container (10px top/bottom, 20px left/right) */
+    width: 100%; /* Ensures the top content container doesn't go beyond the width of its parent */
+    overflow: hidden; /* Hides any overflow content if elements go beyond the container's boundaries */
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+/* Container for the main content (inmate grid + top content) */
+.main-container {
+    max-width: 100%; /* Set a maximum width to ensure the content doesn't go beyond the viewport */
+    margin: 0 auto; /* Centers the content horizontally */
+    padding: 0 20px; /* Optional: Adds padding to the left/right */
+}
+
+/* Logo styling */
+.logo {
+    width: auto; /* Automatically adjusts the width of the logo */
+    max-width: 120px; /* Ensures the logo does not exceed 120px in width */
+    height: auto; /* Maintains the aspect ratio by adjusting the height automatically */
+    flex-shrink: 0; /* Prevents the logo from shrinking when space is tight */
+}
+
+/* Group for search and filter inputs */
+.search-filter-group {
+    display: flex; /* Uses Flexbox to align the search input and filter dropdown horizontally */
+    width: 100%; /* Makes the group take up the full available width of its parent container */
+    gap: 0px; /* Adds a 10px gap between the search and filter elements */
+    justify-content: center; /* Centers the search and filter section horizontally */
+    flex-grow: 1; /* Allow this group to take up all remaining space */
+}
+
+/* Larger search input */
+.search-input {
+    flex-grow: 5; /* Makes the search input take up more space */
+    font-size: 16px; /* Sets the font size inside the input */
+    padding: 10px; /* Adds padding inside the input field for better readability */
+    border-radius: 15px; /* Rounds the corners of the input */
+    border: 1px solid #ccc;
+}
+
+/* Smaller filter dropdown */
+.filter-select {
+    flex-grow: 1; /* Makes the filter dropdown take up less space */
+    font-size: 14px; /* Sets the font size inside the dropdown */
+    padding: 8px; /* Adds padding inside the dropdown for better readability */
+    border-radius: 15px; /* Rounds the corners of the dropdown */
+    border: 1px solid #ccc; /* Adds a light grey border around the dropdown */
+    min-width: 150px; /* Ensures filter dropdown does not shrink too much */
+    max-width: 65px;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+    .top-content-container {
+        flex-direction: column; /* Stacks the items vertically on mobile */
+        align-items: center; /* Centers items horizontally in a column */
+        justify-content: center; /* Centers the content vertically */
+        padding: 10px; /* Reduces the padding for mobile devices */
+        gap: 10px; /* Adds a gap between logo, search, and filter */
+    }
+
+    .logo {
+        max-width: 200px; /* Reduces the logo size for smaller screens */
+        max-height: 200px; /* Limits the height of the logo on mobile */
+        margin-bottom: -30px;
+        margin-top: -40px;
+    }
+
+    .search-filter-group {
+        width: 100%; /* Makes the input group take up 100% of the available width on mobile */
+        gap: 0px; /* Reduces the gap between search and filter */
+    }
+
+    .search-input {
+        width: 70%; /* Adjust the search input width for mobile */
+        font-size: 14px; /* Reduces the font size in the search input on mobile */
+        padding: 8px; /* Reduces padding inside the input for better fitting on small screens */
+    }
+
+    .filter-select {
+        width: 30%; /* Adjust the filter dropdown width for mobile */
+        font-size: 12px; /* Reduces the font size of the dropdown for mobile */
+        padding: 6px; /* Reduces padding inside the dropdown for better fitting on small screens */
+    }
+}
+
+/* Desktop-specific adjustments */
+@media (min-width: 768px) {
+    /* Ensure the main content area doesn't go past the grid */
+    .main-container {
+        width: 100%; /* Set width to full available space */
+        margin: 0 auto; /* Centers the content */
+        padding: 0 20px; /* Optional: Adds padding for responsiveness */
+    }
+
+    .top-content-container {
+        flex-direction: row; /* Keeps the items in a row for desktop */
+        justify-content: space-between; /* Keeps space between the logo, search, and filter */
+    }
+
+    .search-filter-group {
+        display: flex; /* Flex container to arrange search and filter elements */
+        justify-content: center; /* Centers the search and filter section */
+        gap: 0px; /* Adds space between search and filter */
+        max-width: 1000px; /* Controls the max width for search/filter */
+        margin: 0 auto; /* Centers the group container horizontally */
+        width: 100%; /* Allows the group to fill available space */
+    }
+
+    .search-input {
+        flex-grow: 1; /* Allow the search input to grow and fill available space */
+        width: 70%; /* Control the width of the search input, adjust as needed */
+        max-width: 600px; /* Optional: Prevents search input from growing too large */
+        font-size: 16px; /* Controls the font size */
+        padding: 10px; /* Adds padding inside the search field */
+        border-radius: 15px; /* Rounds the corners */
+        border: 1px solid #ccc; /* Light grey border */
+    }
+
+    .filter-select {
+        flex-grow: 1; /* Let the filter dropdown grow too */
+        font-size: 14px; /* Font size inside the dropdown */
+        padding: 8px; /* Padding inside the dropdown */
+        border-radius: 15px; /* Rounded corners for the dropdown */
+        border: 1px solid #ccc; /* Light grey border */
+        min-width: 150px; /* Ensures the filter doesn't shrink too much */
+        max-width: 65px; /* Controls the max width */
+    }
+
+    .logo {
+        max-width: 180px; /* Adjust the logo size for desktop */
+        max-height: 150px;
+        margin-left:0% /* Control the height of the logo for desktop */
+    }
+}
+
+/* Desktop-specific adjustments for 1440x900 resolution */
+@media (min-width: 1440px) and (max-width: 1600px) { /* Adjust based on your desktop resolution */
+    .logo {
+      
+        position: relative;
+        left: 230px;
+        max-width: 180px; /* Adjust the logo size for desktop */
+        max-height: 150px; /* Control the height of the logo for desktop */
+    }
+}
+
+/* To prevent any change for smaller tablet sizes */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .logo {
+        margin-left: 0; /* Keep the logo centered or at its original position */
+    }
+}
+
+/* Desktop-specific adjustments for 1440x900 resolution */
+@media (min-width: 1440px) and (max-width: 1600px) { /* Adjust based on your desktop resolution */
+    .logo {
+      
+        position: relative;
+        left: 230px;
+        max-width: 180px; /* Adjust the logo size for desktop */
+        max-height: 150px; /* Control the height of the logo for desktop */
+    }
+}
+
+/* For larger screens (1920px wide and above) */
+@media (min-width: 1920px) {
+    .logo {
+        /* Move the logo to the right */
+        position: relative; /* Enable relative positioning */
+        left: 475px; /* Adjust this value to move the logo right, try tweaking this */
+        max-width: 180px; /* Adjust logo size */
+        max-height: 150px; /* Control the height of the logo */
+    }
+}
+
+/* For smaller tablet screens (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .logo {
+        position: static; /* Ensure default position on tablet sizes */
+    }
+}

@@ -1,4 +1,4 @@
-// server/routes/xmlRoutes.js
+
 
 import express from 'express';
 import { fetchAndStoreXML } from '../controllers/xmlController.mjs';

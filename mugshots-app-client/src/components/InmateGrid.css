@@ -1,0 +1,30 @@
+/* inmateGrid.css */
+
+.card-body{
+    padding: 0.5rem 0.25rem;
+}
+/* Default font size for inmate names */
+.inmate-name {
+    font-size: 1rem;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Adjust font size and enable wrapping for small screens */
+@media (max-width: 576px) {
+    .inmate-name {
+        font-size: 0.6rem; /* Smaller font size for phones */
+        white-space: normal; /* Allow text to wrap */
+        line-height: 1.2; /* Adjust line spacing for readability */
+        display: block;
+    }
+}
+
+/* Adjust font size for medium screens */
+@media (max-width: 768px) {
+    .inmate-name {
+        font-size: 0.6rem; /* Medium font size for tablets */
+        white-space: normal; /* Allow wrapping on medium screens too */
+        line-height: 1.2;
+    }
+}

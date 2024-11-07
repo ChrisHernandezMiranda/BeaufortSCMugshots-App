@@ -1,0 +1,43 @@
+/* Buttons.css */
+.buttons-container {
+    display: flex;
+    justify-content: center;  /* Center the buttons */
+    align-items: center;      /* Center items vertically */
+    width: 100%;              /* Ensure full width */
+    padding: 0 10px;          /* Add some horizontal padding */
+}
+
+/* Button styles */
+.buttons__btn {
+    flex: 1;                  /* Allow buttons to grow and fill available space */
+    height: auto;             /* Dynamic height to fit content */
+    min-width: 100px;         /* Minimum width for buttons */
+    max-width: 150px;         /* Maximum width for buttons */
+    margin: 0 5px;           /* Reduce margin for better centering */
+    padding: 1px;            /* Add padding for aesthetics */
+    font-size: 14px;          /* Set a font size */
+    box-sizing: border-box;  
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .buttons__btn {
+        height: 45px;         
+        font-size: 12px;      
+        white-space: normal;   
+        text-align: center;    
+        min-width: 80px;      
+        max-width: 120px;
+        background-color: #f8f9fd;    
+    }
+
+    .mobile-break {
+        display: inline-block; 
+    }
+}
+
+/* Hover effect */
+.buttons__btn-hover:hover {
+    background-color: #d1d6f0; 
+    border-color: #d1d6f0;     
+}
