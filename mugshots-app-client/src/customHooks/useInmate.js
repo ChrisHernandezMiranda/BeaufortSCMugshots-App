@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const BASE_URL = 'https://beaufort-sc-mugshots-31136acff250.herokuapp.com/inmates'; // Directly point to the inmates endpoint
+const BASE_URL = 'https://www.beaufortmugshots.com/inmates';
 
 const useFetchInmates = () => { 
   const [inmates, setInmates] = useState([]);
