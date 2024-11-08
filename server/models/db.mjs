@@ -1,11 +1,22 @@
-import pg from 'pg'; // Import pg using default import
-import dotenv from 'dotenv'; // Import dotenv to load .env variables
+import pg from 'pg';
+import dotenv from 'dotenv';
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
-const { Pool } = pg; // Extract Pool from the default import
+const { Pool } = pg;
 
-// Log the connection parameters for debugging
+
+const isHeroku = process.env.DATABASE_URL;
+
+
+const pool = new Pool({
+  connectionString: isHeroku
+    ? process.env.DATABASE_URL  
+    : `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+  ssl: isHeroku ? { rejectUnauthorized: false } : false,  
+});
+
+
 console.log('Connecting to database with:', {
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -13,14 +24,5 @@ console.log('Connecting to database with:', {
   port: process.env.DB_PORT,
 });
 
-// Initialize the Pool with your database configuration
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
 
-// Export the pool for use in other files
 export default pool;
