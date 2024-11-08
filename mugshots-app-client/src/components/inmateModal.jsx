@@ -22,11 +22,11 @@ const InmateModal = ({ inmate, onClose }) => {
                 
                 <h2 className="inmate-modal__title">{`${inmate.first_name} ${inmate.last_name}`}</h2>
                 <img
-                    src={inmate.mugshot_url || defaultImage}
-                    alt={`${inmate.first_name} ${inmate.last_name}`}
-                    className="inmate-modal__image"
-                    onError={(e) => { e.target.src = defaultImage; }}
-                />
+    src={inmate.mugshot_url ? `https://beaufort-sc-mugshots-31136acff250.herokuapp.com/proxy-image?url=${encodeURIComponent(inmate.mugshot_url)}` : defaultImage}
+    alt={`${inmate.first_name} ${inmate.last_name}`}
+    className="inmate-modal__image"
+    onError={(e) => { e.target.src = defaultImage; }}
+/>
 
                 {offenses.length > 0 ? (
                     <table className="inmate-modal__table table table-responsive">
