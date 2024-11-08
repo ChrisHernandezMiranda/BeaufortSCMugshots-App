@@ -1,28 +1,13 @@
-import pg from 'pg';
 import dotenv from 'dotenv';
-
 dotenv.config();
+import { Pool } from 'pg';
 
-const { Pool } = pg;
 
-
-const isHeroku = process.env.DATABASE_URL;
-
+const connectionString = process.env.DATABASE_URL || `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 
 const pool = new Pool({
-  connectionString: isHeroku
-    ? process.env.DATABASE_URL  
-    : `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-  ssl: isHeroku ? { rejectUnauthorized: false } : false,  
+  connectionString: connectionString,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,  // Enable SSL for Heroku
 });
-
-
-console.log('Connecting to database with:', {
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-});
-
 
 export default pool;
