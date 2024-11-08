@@ -42,12 +42,12 @@ const InmateGrid = ({ inmates, loading, error, selectedFilter, lastUpdatedTime, 
                             style={{ cursor: 'pointer' }}
                         >
                             <img
-                                src={inmate.mugshot_url || defaultImage}
-                                alt={inmate.first_name || 'Inmate'}
-                                className="card-img-top"
-                                onError={(e) => { e.target.src = defaultImage; }}
-                                style={{ borderRadius: '8px' }}
-                            />
+    src={inmate.mugshot_url ? `https://beaufort-sc-mugshots-31136acff250.herokuapp.com/proxy-image?url=${encodeURIComponent(inmate.mugshot_url)}` : defaultImage}
+    alt={inmate.first_name || 'Inmate'}
+    className="card-img-top"
+    onError={(e) => { e.target.src = defaultImage; }}
+    style={{ borderRadius: '8px' }}
+/>
                             <div className="card-body">
                                 <h5 className="card-title mb-0 inmate-name">{`${inmate.first_name} ${inmate.last_name}`}</h5>
                             </div>

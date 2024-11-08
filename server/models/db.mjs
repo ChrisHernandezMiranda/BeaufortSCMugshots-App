@@ -1,12 +1,14 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 
-// Set up the pool using the DATABASE_URL environment variable for Heroku
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Debugging: Log the DATABASE_URL to make sure it's set
+console.log("Database URL:", process.env.DATABASE_URL);
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Use DATABASE_URL set by Heroku
-  ssl: {
-    rejectUnauthorized: false, // Disable SSL verification for production
-  },
+  connectionString: process.env.DATABASE_URL,
+  ssl: isProduction ? { rejectUnauthorized: false } : false, // SSL for Heroku
 });
 
 export default pool;
